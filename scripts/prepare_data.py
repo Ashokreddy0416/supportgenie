@@ -15,11 +15,19 @@ def explore(df):
     print(f"Intents: {df['intent'].nunique()}")
     print(df["instruction"].head(5).to_string())
 
+def build_knowledge_base(df):
+    df = df.assign(length=df["response"].str.len())
+    best_rows = df.groupby("intent")["length"].idxmax()
+    kb = df.loc[best_rows, ["intent", "category", "response"]]
+    return kb.reset_index(drop=True)
+
 
 def main() -> None:
     dataset = load_dataset(DATASET_ID, split="train")
     df = dataset.to_pandas()
-    explore(df)
+    kb = build_knowledge_base(df)
+    print(f"Knowledge base shrank to {len(kb)} entries")
+    print(kb[["intent", "category"]].to_string())
 
 
 if __name__ == "__main__":
