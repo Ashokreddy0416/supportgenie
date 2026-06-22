@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 src/supportgenie/__init__.py
 src/supportgenie/embeddings.py
+src/supportgenie/generator.py
 src/supportgenie/retriever.py
 src/supportgenie/vector_store.py
 src/supportgenie.egg-info/PKG-INFO
