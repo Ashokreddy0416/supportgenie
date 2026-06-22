@@ -1,0 +1,8 @@
+# Virtual environment — rebuilt with `uv sync`
+.venv/
+
+# Generated data — rebuilt with the prepare_data script
+data/
+
+# Python's auto-generated cache
+__pycache__/
