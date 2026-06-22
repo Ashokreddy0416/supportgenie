@@ -12,6 +12,7 @@ src/supportgenie.egg-info/dependency_links.txt
 src/supportgenie.egg-info/requires.txt
 src/supportgenie.egg-info/top_level.txt
 src/supportgenie/graph/__init__.py
+src/supportgenie/graph/agent.py
 src/supportgenie/graph/nodes.py
 src/supportgenie/graph/state.py
 src/supportgenie/graph/workflow.py
