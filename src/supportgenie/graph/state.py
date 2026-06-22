@@ -1,6 +1,8 @@
 """The shared state that flows through the agent graph."""
 
-from typing import TypedDict
+from typing import Annotated, TypedDict
+
+from langgraph.graph.message import add_messages
 
 
 class AgentState(TypedDict):
@@ -8,3 +10,4 @@ class AgentState(TypedDict):
     route: str
     hits: list
     answer: str
+    messages: Annotated[list, add_messages]

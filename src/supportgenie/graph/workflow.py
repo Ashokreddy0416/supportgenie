@@ -1,6 +1,7 @@
 """Build and compile the SupportGenie agent graph."""
 
 from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.memory import MemorySaver
 
 from supportgenie.graph.state import AgentState
 from supportgenie.graph.nodes import (
@@ -29,4 +30,4 @@ def build_graph():
     builder.add_edge("retrieve", "generate")
     builder.add_edge("generate", END)
 
-    return builder.compile()
+    return builder.compile(checkpointer=MemorySaver())
