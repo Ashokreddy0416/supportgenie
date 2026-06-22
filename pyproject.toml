@@ -21,6 +21,7 @@ dependencies = [
     "bcrypt>=5.0.0",
     "pyjwt>=2.13.0",
     "pydantic-settings>=2.14.2",
+    "slowapi>=0.1.10",
 ]
 
 [tool.uv]
