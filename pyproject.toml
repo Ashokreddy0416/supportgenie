@@ -9,6 +9,8 @@ dependencies = [
     "pandas",
     "sentence-transformers",
     "qdrant-client",
+    "groq>=1.5.0",
+    "python-dotenv>=1.2.2",
 ]
 
 [tool.uv]

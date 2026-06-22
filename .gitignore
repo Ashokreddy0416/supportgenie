@@ -6,3 +6,4 @@ data/
 
 # Python's auto-generated cache
 __pycache__/
+.env
