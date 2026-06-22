@@ -1,6 +1,6 @@
-"""An agent that can call MCP tools to take real actions."""
-
 import os
+import sys
+from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
@@ -9,14 +9,14 @@ from langgraph.prebuilt import create_react_agent
 
 load_dotenv()
 
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 
 
 def build_mcp_config():
     return {
         "supportgenie-tools": {
-            "command": "uv",
-            "args": ["run", "python", "scripts/mcp_server.py"],
+            "command": sys.executable,
+            "args": [str(Path("scripts/mcp_server.py").resolve())],
             "transport": "stdio",
         }
     }
