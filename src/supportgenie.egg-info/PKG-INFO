@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: supportgenie
+Version: 0.1.0
+Summary: Agentic RAG customer-support copilot
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: datasets
+Requires-Dist: pandas
+Requires-Dist: sentence-transformers
+Requires-Dist: qdrant-client
+Dynamic: license-file
+
+## Data & attribution
+
+SupportGenie's knowledge base is built from the
+[Bitext Customer Support Dataset](https://huggingface.co/datasets/bitext/Bitext-customer-support-llm-chatbot-training-dataset),
+© Bitext Innovations, licensed under CDLA-Sharing-1.0.
+
+The dataset is **not stored in this repo** — regenerate it locally with:
+
+`uv run python scripts/prepare_data.py`

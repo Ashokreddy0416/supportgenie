@@ -1,0 +1,4 @@
+datasets
+pandas
+sentence-transformers
+qdrant-client
