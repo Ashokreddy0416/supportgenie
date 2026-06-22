@@ -36,3 +36,14 @@ def generate_node(state: AgentState) -> dict:
         temperature=0.3,
     )
     return {"answer": response.choices[0].message.content}
+
+def router_node(state: AgentState) -> dict:
+    question = state["question"].lower().strip()
+    greetings = ("hi", "hello", "hey", "good morning", "good evening", "thanks", "thank you")
+    if any(question.startswith(g) for g in greetings):
+        return {"route": "greeting"}
+    return {"route": "faq"}
+
+
+def greeting_node(state: AgentState) -> dict:
+    return {"answer": "Hello! I'm SupportGenie. How can I help you with your order or account today?"}
