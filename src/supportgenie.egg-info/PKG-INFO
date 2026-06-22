@@ -12,6 +12,8 @@ Requires-Dist: qdrant-client
 Requires-Dist: groq>=1.5.0
 Requires-Dist: python-dotenv>=1.2.2
 Requires-Dist: langgraph>=1.2.6
+Requires-Dist: mcp>=1.28.0
+Requires-Dist: langchain-mcp-adapters>=0.3.0
 Dynamic: license-file
 
 ## Data & attribution
