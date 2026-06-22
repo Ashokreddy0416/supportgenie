@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException
 
 from supportgenie.schemas import ChatRequest, ChatResponse
 from supportgenie.generator import answer as generate_answer
+from supportgenie.auth.routes import router as auth_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -15,6 +16,7 @@ logger = logging.getLogger("supportgenie.api")
 
 app = FastAPI(title="SupportGenie API", version="0.1.0")
 
+app.include_router(auth_router)
 
 @app.get("/health")
 def health():
