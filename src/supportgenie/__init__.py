@@ -1,0 +1,1 @@
+"""SupportGenie — agentic RAG customer-support copilot."""
