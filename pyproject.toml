@@ -36,3 +36,8 @@ package = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/supportgenie"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
