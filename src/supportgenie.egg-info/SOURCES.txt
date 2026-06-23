@@ -7,6 +7,7 @@ src/supportgenie/cached_answer.py
 src/supportgenie/config.py
 src/supportgenie/embeddings.py
 src/supportgenie/generator.py
+src/supportgenie/metrics.py
 src/supportgenie/observability.py
 src/supportgenie/retriever.py
 src/supportgenie/schemas.py
@@ -30,6 +31,9 @@ src/supportgenie/db/__init__.py
 src/supportgenie/db/database.py
 src/supportgenie/db/models.py
 src/supportgenie/db/users_repo.py
+src/supportgenie/evaluation/__init__.py
+src/supportgenie/evaluation/build_records.py
+src/supportgenie/evaluation/run_eval.py
 src/supportgenie/graph/__init__.py
 src/supportgenie/graph/agent.py
 src/supportgenie/graph/nodes.py
