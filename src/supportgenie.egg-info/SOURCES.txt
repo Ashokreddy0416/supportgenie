@@ -21,6 +21,9 @@ src/supportgenie/auth/passwords.py
 src/supportgenie/auth/routes.py
 src/supportgenie/auth/tokens.py
 src/supportgenie/auth/users.py
+src/supportgenie/db/__init__.py
+src/supportgenie/db/database.py
+src/supportgenie/db/models.py
 src/supportgenie/graph/__init__.py
 src/supportgenie/graph/agent.py
 src/supportgenie/graph/nodes.py

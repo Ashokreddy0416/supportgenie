@@ -16,3 +16,4 @@ pyjwt>=2.13.0
 pydantic-settings>=2.14.2
 slowapi>=0.1.10
 sqlalchemy>=2.0.51
+alembic>=1.18.4
