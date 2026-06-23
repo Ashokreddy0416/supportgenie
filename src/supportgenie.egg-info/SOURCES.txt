@@ -44,3 +44,5 @@ src/supportgenie/guardrails/groundedness.py
 src/supportgenie/guardrails/injection.py
 src/supportgenie/guardrails/pii.py
 src/supportgenie/guardrails/policy.py
+tests/test_basics.py
+tests/test_cached_answer.py
