@@ -24,6 +24,7 @@ Requires-Dist: pydantic-settings>=2.14.2
 Requires-Dist: slowapi>=0.1.10
 Requires-Dist: sqlalchemy>=2.0.51
 Requires-Dist: alembic>=1.18.4
+Requires-Dist: langfuse>=4.9.1
 Dynamic: license-file
 
 ## Data & attribution

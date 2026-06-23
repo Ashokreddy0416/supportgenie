@@ -24,6 +24,7 @@ dependencies = [
     "slowapi>=0.1.10",
     "sqlalchemy>=2.0.51",
     "alembic>=1.18.4",
+    "langfuse>=4.9.1",
 ]
 
 [tool.uv]

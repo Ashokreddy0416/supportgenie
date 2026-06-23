@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 src/supportgenie/__init__.py
 src/supportgenie/api.py
+src/supportgenie/cached_answer.py
 src/supportgenie/config.py
 src/supportgenie/embeddings.py
 src/supportgenie/generator.py
@@ -23,6 +24,7 @@ src/supportgenie/auth/tokens.py
 src/supportgenie/auth/users.py
 src/supportgenie/cache/__init__.py
 src/supportgenie/cache/exact.py
+src/supportgenie/cache/semantic.py
 src/supportgenie/db/__init__.py
 src/supportgenie/db/database.py
 src/supportgenie/db/models.py
