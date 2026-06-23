@@ -31,7 +31,7 @@ Requires-Dist: langchain-huggingface>=1.2.2
 Requires-Dist: langchain-community>=0.4.2
 Dynamic: license-file
 
-## Data & attribution
+![CI](https://github.com/Ashokreddy0416/supportgenie/actions/workflows/ci.yml/badge.svg)
 
 SupportGenie's knowledge base is built from the
 [Bitext Customer Support Dataset](https://huggingface.co/datasets/bitext/Bitext-customer-support-llm-chatbot-training-dataset),

@@ -1,4 +1,4 @@
-## Data & attribution
+![CI](https://github.com/Ashokreddy0416/supportgenie/actions/workflows/ci.yml/badge.svg)
 
 SupportGenie's knowledge base is built from the
 [Bitext Customer Support Dataset](https://huggingface.co/datasets/bitext/Bitext-customer-support-llm-chatbot-training-dataset),

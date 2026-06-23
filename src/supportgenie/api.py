@@ -13,6 +13,8 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from starlette.requests import Request
 from prometheus_fastapi_instrumentator import Instrumentator
+from supportgenie.db.database import engine, Base
+from supportgenie.db import models  # noqa: F401  (registers the tables)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,6 +23,8 @@ logging.basicConfig(
 logger = logging.getLogger("supportgenie.api")
 
 app = FastAPI(title="SupportGenie API", version="0.1.0")
+# Ensure database tables exist on startup (safe to run repeatedly).
+Base.metadata.create_all(bind=engine)
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
