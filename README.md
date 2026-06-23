@@ -1,9 +1,186 @@
-![CI](https://github.com/Ashokreddy0416/supportgenie/actions/workflows/ci.yml/badge.svg)
+# SupportGenie
 
-SupportGenie's knowledge base is built from the
-[Bitext Customer Support Dataset](https://huggingface.co/datasets/bitext/Bitext-customer-support-llm-chatbot-training-dataset),
-© Bitext Innovations, licensed under CDLA-Sharing-1.0.
+A production-grade **Agentic RAG customer-support copilot**. SupportGenie answers customer questions by retrieving from a knowledge base, reasoning over tools, and generating grounded responses — wrapped in a secured, observable, cloud-deployed API.
 
-The dataset is **not stored in this repo** — regenerate it locally with:
+Interactive API docs: `https://supportgenie-901480469335.us-central1.run.app/docs`
 
-`uv run python scripts/prepare_data.py`
+## What it does
+
+SupportGenie is a customer-support assistant that:
+
+- **Retrieves** relevant answers from a knowledge base using semantic search (RAG).
+- **Reasons** with an agent that can call tools (order lookup, inventory check, ticket creation) via MCP.
+- **Generates** grounded answers with an LLM, constrained to the retrieved context.
+- **Guards** against PII leaks, prompt injection, and ungrounded (hallucinated) responses.
+- **Serves** all of this through an authenticated, rate-limited, observable REST API.
+
+---
+
+## Key features
+
+- **Agentic RAG pipeline** — retrieval + LLM generation orchestrated with LangGraph, with tool-calling via MCP.
+- **Guardrails** — PII detection (Presidio), prompt-injection screening, and groundedness checking.
+- **Authentication & authorization** — bcrypt password hashing, JWT tokens, role-based access control, rate limiting.
+- **Persistence** — users, conversations, messages, and feedback stored in PostgreSQL (SQLAlchemy + Alembic migrations).
+- **Caching** — exact-match and semantic caching to cut latency and LLM cost on repeat questions.
+- **Observability** — Langfuse tracing + Prometheus metrics on a `/metrics` endpoint.
+- **Evaluation** — an LLM-as-judge quality gate scoring faithfulness and relevancy, with pass/fail thresholds.
+- **Testing** — unit, mocked, and integration tests (pytest), run automatically in CI.
+- **CI/CD** — GitHub Actions runs linting and the full test suite on every push.
+- **Containerized & deployed** — Docker image built via Cloud Build, deployed to Google Cloud Run with secrets in Secret Manager.
+
+---
+
+## Architecture
+
+```
+                          ┌─────────────────────────────┐
+   Client ──HTTP──▶        │      FastAPI (Cloud Run)     │
+                          │                              │
+                          │  Auth (JWT) ─ Rate limiting  │
+                          │  Guardrails (PII/injection)  │
+                          │            │                 │
+                          │            ▼                 │
+                          │   Cache (exact + semantic)   │
+                          │            │                 │
+                          │            ▼                 │
+                          │   LangGraph agent + RAG      │
+                          └──────┬───────────┬───────────┘
+                                 │           │
+                  ┌──────────────┘           └──────────────┐
+                  ▼                                          ▼
+          ┌───────────────┐                        ┌──────────────────┐
+          │  Qdrant Cloud │  (vector search)       │   Neon Postgres  │  (users, chats)
+          └───────────────┘                        └──────────────────┘
+                  │
+                  ▼
+          ┌───────────────┐
+          │   Groq LLM    │  (generation + judging)
+          └───────────────┘
+
+   Observability: Langfuse (traces) + Prometheus (/metrics)
+   Secrets: Google Secret Manager (injected at runtime)
+```
+
+---
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| API framework | FastAPI + Uvicorn |
+| Agent orchestration | LangGraph |
+| Tool protocol | MCP (Model Context Protocol) |
+| LLM | Groq (Llama 3.3 70B / GPT-OSS 120B) |
+| Embeddings | BAAI/bge-small-en-v1.5 (local) |
+| Vector store | Qdrant (embedded locally / Qdrant Cloud in production) |
+| Database | SQLite (local) / Neon PostgreSQL (production) |
+| ORM & migrations | SQLAlchemy + Alembic |
+| Auth | bcrypt + PyJWT |
+| Guardrails | Presidio + custom checks |
+| Observability | Langfuse + Prometheus |
+| Testing | pytest |
+| CI/CD | GitHub Actions |
+| Container & deploy | Docker, Cloud Build, Cloud Run, Secret Manager |
+| Package manager | uv |
+
+---
+
+## Running locally
+
+### Prerequisites
+- Python 3.11
+- [uv](https://docs.astral.sh/uv/) package manager
+- A [Groq](https://console.groq.com) API key (free tier)
+
+### Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/Ashokreddy0416/supportgenie.git
+cd supportgenie
+
+# Install dependencies
+uv sync
+
+# Create a .env file (see Configuration below)
+
+# Prepare data and load the knowledge base
+uv run python scripts/prepare_data.py
+uv run python scripts/ingest.py
+
+# Run the API
+uv run uvicorn supportgenie.api:app --reload
+```
+
+Then open `http://127.0.0.1:8000/docs` to use the interactive API.
+
+### Configuration (.env)
+
+```dotenv
+GROQ_API_KEY=your-groq-key
+JWT_SECRET_KEY=a-long-random-secret
+
+# Optional: cloud services (falls back to local SQLite + embedded Qdrant if unset)
+DATABASE_URL=postgresql://...        # Neon, otherwise local SQLite
+QDRANT_URL=https://...qdrant.io:6333 # Qdrant Cloud, otherwise local embedded
+QDRANT_API_KEY=your-qdrant-key
+
+# Optional: observability
+LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_HOST=https://cloud.langfuse.com
+```
+
+---
+
+## Using the API
+
+1. **Sign up:** `POST /auth/signup` with `{"username": "...", "password": "..."}`
+2. **Log in:** `POST /auth/login` → returns an `access_token`
+3. **Authorize:** include the token as `Authorization: Bearer <token>`
+4. **Ask:** `POST /chat` with `{"question": "how do I cancel my order?"}`
+
+Other endpoints: `GET /health` (liveness), `GET /metrics` (Prometheus), `GET /admin/stats` (admin only).
+
+---
+
+## Testing & evaluation
+
+```bash
+# Run the test suite
+uv run pytest
+
+# Run the quality-gate evaluation (LLM-as-judge)
+uv run python scripts/evaluate.py
+```
+
+---
+
+## Project structure
+
+```
+supportgenie/
+├── src/supportgenie/
+│   ├── api.py              # FastAPI app and endpoints
+│   ├── config.py           # Settings (env-driven)
+│   ├── retriever.py        # Vector search
+│   ├── generator.py        # LLM generation
+│   ├── cached_answer.py    # Caching + answer flow
+│   ├── auth/               # Passwords, tokens, routes, RBAC
+│   ├── db/                 # SQLAlchemy models, repository, session
+│   ├── cache/              # Exact + semantic cache
+│   ├── guardrails/         # PII, injection, groundedness
+│   ├── graph/              # LangGraph state, nodes, workflow
+│   └── evaluation/         # LLM-judge evaluation
+├── scripts/                # Data prep, ingestion, MCP server, evaluation
+├── tests/                  # Unit, mocked, integration tests
+├── Dockerfile              # Container recipe
+└── .github/workflows/      # CI pipeline
+```
+
+---
+
+## License
+
+This project was built as a learning exercise. Use freely.
