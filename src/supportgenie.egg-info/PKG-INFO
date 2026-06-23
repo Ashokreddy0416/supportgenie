@@ -22,6 +22,7 @@ Requires-Dist: bcrypt>=5.0.0
 Requires-Dist: pyjwt>=2.13.0
 Requires-Dist: pydantic-settings>=2.14.2
 Requires-Dist: slowapi>=0.1.10
+Requires-Dist: sqlalchemy>=2.0.51
 Dynamic: license-file
 
 ## Data & attribution
