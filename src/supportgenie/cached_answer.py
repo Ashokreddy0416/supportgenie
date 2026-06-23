@@ -3,6 +3,7 @@
 import logging
 
 from langfuse import observe, get_client
+from supportgenie.metrics import cache_hits, cache_misses
 
 from supportgenie.generator import answer as generate_answer
 from supportgenie.cache.exact import get_cached, set_cached
@@ -20,6 +21,7 @@ def answer_with_cache(question):
     cached = get_cached(question)
     if cached is not None:
         logger.info("Exact cache HIT")
+        cache_hits.labels(cache_type="exact").inc()
         langfuse.update_current_span(
             output={"answer": cached},
             metadata={"cache": "exact_hit"},
@@ -30,6 +32,7 @@ def answer_with_cache(question):
     cached = get_semantic_cached(question)
     if cached is not None:
         logger.info("Semantic cache HIT")
+        cache_hits.labels(cache_type="semantic").inc()
         langfuse.update_current_span(
             output={"answer": cached},
             metadata={"cache": "semantic_hit"},
@@ -38,6 +41,7 @@ def answer_with_cache(question):
 
     # 3. Miss — do the real (expensive) work.
     logger.info("Cache MISS — running full RAG pipeline")
+    cache_misses.inc()
     reply = generate_answer(question)
 
     # 4. Save to both caches for next time.

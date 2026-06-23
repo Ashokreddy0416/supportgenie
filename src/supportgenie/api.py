@@ -12,6 +12,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from starlette.requests import Request
+from prometheus_fastapi_instrumentator import Instrumentator
 
 logging.basicConfig(
     level=logging.INFO,
@@ -50,3 +51,5 @@ def chat(request: Request, chat_request: ChatRequest, user=Depends(get_current_u
 @app.get("/admin/stats")
 def admin_stats(user=Depends(require_role("admin"))):
     return {"message": f"Welcome admin {user['username']}", "total_users": "stats would go here"}
+
+Instrumentator().instrument(app).expose(app)

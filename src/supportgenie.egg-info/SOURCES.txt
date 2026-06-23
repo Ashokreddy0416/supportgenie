@@ -7,6 +7,7 @@ src/supportgenie/cached_answer.py
 src/supportgenie/config.py
 src/supportgenie/embeddings.py
 src/supportgenie/generator.py
+src/supportgenie/observability.py
 src/supportgenie/retriever.py
 src/supportgenie/schemas.py
 src/supportgenie/vector_store.py

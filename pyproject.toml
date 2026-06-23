@@ -25,6 +25,8 @@ dependencies = [
     "sqlalchemy>=2.0.51",
     "alembic>=1.18.4",
     "langfuse>=4.9.1",
+    "prometheus-client>=0.25.0",
+    "prometheus-fastapi-instrumentator>=8.0.1",
 ]
 
 [tool.uv]
