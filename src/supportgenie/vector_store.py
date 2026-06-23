@@ -2,6 +2,7 @@
 
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams
+from supportgenie.config import settings
 
 DB_PATH = "data/qdrant"
 COLLECTION = "faqs"
@@ -9,7 +10,12 @@ VECTOR_SIZE = 384
 
 
 def get_client():
-    return QdrantClient(path=DB_PATH)
+    if settings.qdrant_url and settings.qdrant_api_key:
+        return QdrantClient(
+            url=settings.qdrant_url,
+            api_key=settings.qdrant_api_key.get_secret_value(),
+        )
+    return QdrantClient(path="data/qdrant")
 
 
 def create_collection(client):

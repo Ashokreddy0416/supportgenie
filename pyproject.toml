@@ -29,6 +29,7 @@ dependencies = [
     "prometheus-fastapi-instrumentator>=8.0.1",
     "langchain-huggingface>=1.2.2",
     "langchain-community>=0.4.2",
+    "psycopg2-binary>=2.9.12",
 ]
 
 [tool.uv]

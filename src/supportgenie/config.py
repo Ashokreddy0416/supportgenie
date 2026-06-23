@@ -33,5 +33,12 @@ class Settings(BaseSettings):
     langfuse_secret_key: SecretStr | None = None
     langfuse_host: str = "https://cloud.langfuse.com"
 
+    # --- Cloud database (Neon Postgres) ---
+    database_url: str = "sqlite:///data/supportgenie.db"
+
+    # --- Cloud vector store (Qdrant Cloud) ---
+    qdrant_url: str | None = None
+    qdrant_api_key: SecretStr | None = None
+
 
 settings = Settings()

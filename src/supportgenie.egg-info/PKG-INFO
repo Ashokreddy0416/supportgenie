@@ -29,6 +29,7 @@ Requires-Dist: prometheus-client>=0.25.0
 Requires-Dist: prometheus-fastapi-instrumentator>=8.0.1
 Requires-Dist: langchain-huggingface>=1.2.2
 Requires-Dist: langchain-community>=0.4.2
+Requires-Dist: psycopg2-binary>=2.9.12
 Dynamic: license-file
 
 ![CI](https://github.com/Ashokreddy0416/supportgenie/actions/workflows/ci.yml/badge.svg)
