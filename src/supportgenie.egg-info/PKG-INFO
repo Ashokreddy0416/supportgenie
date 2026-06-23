@@ -27,6 +27,7 @@ Requires-Dist: alembic>=1.18.4
 Requires-Dist: langfuse>=4.9.1
 Requires-Dist: prometheus-client>=0.25.0
 Requires-Dist: prometheus-fastapi-instrumentator>=8.0.1
+Requires-Dist: ragas>=0.4.3
 Dynamic: license-file
 
 ## Data & attribution
