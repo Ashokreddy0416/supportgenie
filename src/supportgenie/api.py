@@ -5,7 +5,7 @@ import logging
 from fastapi import FastAPI, HTTPException, Depends
 
 from supportgenie.schemas import ChatRequest, ChatResponse
-from supportgenie.generator import answer as generate_answer
+from supportgenie.cached_answer import answer_with_cache
 from supportgenie.auth.routes import router as auth_router
 from supportgenie.auth.dependencies import get_current_user, require_role
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -36,7 +36,8 @@ def health():
 def chat(request: Request, chat_request: ChatRequest, user=Depends(get_current_user)):
     logger.info("Chat request from user '%s': %s", user["username"], chat_request.question[:80])
     try:
-        reply = generate_answer(chat_request.question)
+        result = answer_with_cache(chat_request.question)
+        reply = result["answer"]
     except Exception:
         logger.exception("Failed to generate answer")
         raise HTTPException(
