@@ -3,7 +3,7 @@
 import logging
 
 from fastapi import FastAPI, HTTPException, Depends
-
+from fastapi.middleware.cors import CORSMiddleware
 from supportgenie.schemas import ChatRequest, ChatResponse
 from supportgenie.cached_answer import answer_with_cache
 from supportgenie.auth.routes import router as auth_router
@@ -23,6 +23,13 @@ logging.basicConfig(
 logger = logging.getLogger("supportgenie.api")
 
 app = FastAPI(title="SupportGenie API", version="0.1.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Ensure database tables exist on startup (safe to run repeatedly).
 Base.metadata.create_all(bind=engine)
 limiter = Limiter(key_func=get_remote_address)
