@@ -1,7 +1,6 @@
 """The FastAPI web application for SupportGenie."""
 
 import logging
-
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from supportgenie.schemas import ChatRequest, ChatResponse
@@ -15,6 +14,8 @@ from starlette.requests import Request
 from prometheus_fastapi_instrumentator import Instrumentator
 from supportgenie.db.database import engine, Base
 from supportgenie.db import models  # noqa: F401  (registers the tables)
+from fastapi.responses import FileResponse
+from pathlib import Path
 
 logging.basicConfig(
     level=logging.INFO,
@@ -41,6 +42,13 @@ app.include_router(auth_router)
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "SupportGenie"}
+
+STATIC_DIR = Path(__file__).parent / "static"
+
+
+@app.get("/")
+def serve_ui():
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.post("/chat", response_model=ChatResponse)
